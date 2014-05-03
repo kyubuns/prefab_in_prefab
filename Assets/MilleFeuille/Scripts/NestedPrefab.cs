@@ -44,7 +44,9 @@ public class NestedPrefab : MonoBehaviour
 	//  in edit mode
 	// ==============
 
+	public static int Redraw = 0;
 	private DateTime lastPrefabUpdateTime;
+	private int redrawCount = 0;
 
 	void StartInEditMode()
 	{
@@ -54,14 +56,17 @@ public class NestedPrefab : MonoBehaviour
 	void OnRenderObject()
 	{
 		if(Application.isPlaying) return;
-
 		DrawDontEditablePrefab();
 	}
 
 	void DrawDontEditablePrefab()
 	{
-		if(prefab == null || ValidationError() || !PrefabUpdated()) return;
+		if(prefab == null) return;
+		if(Redraw == redrawCount && !PrefabUpdated()) return;
+		if(ValidationError()) return;
+		redrawCount = Redraw;
 
+		Debug.Log("DrawDontEditablePrefab");
 		DeleteChildren();
 
 		var generatedObject = InstantiatePrefab();
@@ -138,6 +143,12 @@ public class NestedPrefab : MonoBehaviour
 			}
 			DeleteChildren();
 		}
+
+
+		// 3.
+		// Prefab in Prefab in Prefab
+		// any problems.
+		// ex. A in B in A in B in ...
 
 		return false;
 	}
