@@ -1,5 +1,9 @@
 using UnityEngine;
+using System;
 using System.Collections;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [ExecuteInEditMode]
 public class NestedPrefab : MonoBehaviour {
@@ -7,14 +11,9 @@ public class NestedPrefab : MonoBehaviour {
 
 	void Start()
 	{
-		if(!Application.isPlaying)
-		{
-			StartInEditMode();
-			return;
-		}
+		if(!Application.isPlaying) return;
 
 		InstantiatePrefab();
-
 		Destroy(this.gameObject);
 	}
 
@@ -31,17 +30,24 @@ public class NestedPrefab : MonoBehaviour {
 		return generatedObject;
 	}
 
+#if UNITY_EDITOR
 	// ==============
 	//  in edit mode
 	// ==============
 
-	void StartInEditMode()
+	private DateTime lastPrefabUpdateTime;
+
+	void DrawDontEditablePrefab()
 	{
+		Debug.Log("DrawDontEditablePrefab");
 		DeleteChildren();
 
 		var generatedObject = InstantiatePrefab();
 		generatedObject.transform.parent = this.transform;
 		generatedObject.hideFlags = HideFlags.HideAndDontSave;
+
+		UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
+		lastPrefabUpdateTime = GetPrefabUpdateTime();
 	}
 
 	void DeleteChildren()
@@ -51,4 +57,22 @@ public class NestedPrefab : MonoBehaviour {
 			DestroyImmediate(this.transform.GetChild(i).gameObject);
 		}
 	}
+
+	void OnRenderObject()
+	{
+		if(Application.isPlaying) return;
+
+		var prefabUpdateTime = GetPrefabUpdateTime();
+		if(lastPrefabUpdateTime == prefabUpdateTime) return;
+
+		DrawDontEditablePrefab();
+	}
+
+	DateTime GetPrefabUpdateTime()
+	{
+		var path = AssetDatabase.GetAssetPath(prefab);
+		var lastUpdateTime = System.IO.File.GetLastWriteTime(path);
+		return lastUpdateTime;
+	}
+#endif
 }
