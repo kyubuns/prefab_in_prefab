@@ -119,6 +119,8 @@ public class NestedPrefab : MonoBehaviour
 
 	bool ValidationError()
 	{
+		Debug.Log("ValidationError");
+
 		// 1.
 		// This game object can't have any other components.
 		// Because this game object will delete in Start() in play mode.
@@ -141,14 +143,25 @@ public class NestedPrefab : MonoBehaviour
 			{
 				DestroyImmediate(this.transform.GetChild(i).gameObject);
 			}
-			DeleteChildren();
 		}
-
 
 		// 3.
 		// Prefab in Prefab in Prefab
 		// any problems.
 		// ex. A in B in A in B in ...
+		var testObject = Instantiate(prefab) as GameObject;
+		var components = testObject.GetComponentsInChildren(typeof(Component));
+		foreach(var component in components)
+		{
+			if(component as NestedPrefab == null) continue;
+
+			Debug.LogError("Can't prefab in prefab in prefab.");
+			prefab = null;
+			DestroyImmediate(testObject);
+			DeleteChildren();
+			return true;
+		}
+		DestroyImmediate(testObject);
 
 		return false;
 	}
