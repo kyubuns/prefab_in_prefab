@@ -6,12 +6,17 @@ using UnityEditor;
 #endif
 
 [ExecuteInEditMode]
-public class NestedPrefab : MonoBehaviour {
+public class NestedPrefab : MonoBehaviour
+{
 	public GameObject prefab;
 
 	void Start()
 	{
-		if(!Application.isPlaying) return;
+		if(!Application.isPlaying)
+		{
+			StartInEditMode();
+			return;
+		}
 
 		InstantiatePrefab();
 		Destroy(this.gameObject);
@@ -37,14 +42,34 @@ public class NestedPrefab : MonoBehaviour {
 
 	private DateTime lastPrefabUpdateTime;
 
+	void StartInEditMode()
+	{
+		DrawDontEditablePrefab();
+	}
+
+	void OnRenderObject()
+	{
+		if(Application.isPlaying) return;
+
+		DrawDontEditablePrefab();
+	}
+
 	void DrawDontEditablePrefab()
 	{
-		Debug.Log("DrawDontEditablePrefab");
+		if(prefab == null) return;
+
+		var prefabUpdateTime = GetPrefabUpdateTime();
+		if(lastPrefabUpdateTime == prefabUpdateTime) return;
+
+		Debug.Log(string.Format("DrawDontEditablePrefab - {0}", prefab));
 		DeleteChildren();
 
 		var generatedObject = InstantiatePrefab();
-		generatedObject.transform.parent = this.transform;
-		generatedObject.hideFlags = HideFlags.HideAndDontSave;
+		generatedObject.transform.parent = null;
+		generatedObject.hideFlags = HideFlags.NotEditable | HideFlags.HideInHierarchy | HideFlags.HideInInspector;
+		generatedObject.tag = "EditorOnly";
+		generatedObject.name = string.Format("NestedPrefab-{0}", GetInstanceID());
+		generatedObject.AddComponent<NestedPrefabChild>();
 
 		UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
 		lastPrefabUpdateTime = GetPrefabUpdateTime();
@@ -52,27 +77,21 @@ public class NestedPrefab : MonoBehaviour {
 
 	void DeleteChildren()
 	{
-		for(int i = this.transform.childCount-1; i >= 0; --i)
+		foreach(GameObject obj in GameObject.FindGameObjectsWithTag("EditorOnly"))
 		{
-			DestroyImmediate(this.transform.GetChild(i).gameObject);
+			if(obj.name != string.Format("NestedPrefab-{0}", GetInstanceID())) continue;
+			DestroyImmediate(obj);
 		}
 	}
 
-	void OnRenderObject()
+	string GetFilePath()
 	{
-		if(Application.isPlaying) return;
-
-		var prefabUpdateTime = GetPrefabUpdateTime();
-		if(lastPrefabUpdateTime == prefabUpdateTime) return;
-
-		DrawDontEditablePrefab();
+		return AssetDatabase.GetAssetPath(prefab);
 	}
 
 	DateTime GetPrefabUpdateTime()
 	{
-		var path = AssetDatabase.GetAssetPath(prefab);
-		var lastUpdateTime = System.IO.File.GetLastWriteTime(path);
-		return lastUpdateTime;
+		return System.IO.File.GetLastWriteTime(GetFilePath());
 	}
 #endif
 }
