@@ -45,6 +45,7 @@ public class NestedPrefab : MonoBehaviour
 	// ==============
 
 	public static int Redraw = 0;
+	private static bool updateGameView = false;
 	private DateTime lastPrefabUpdateTime;
 	private int redrawCount = 0;
 
@@ -114,7 +115,12 @@ public class NestedPrefab : MonoBehaviour
 
 	void UpdateGameView()
 	{
-		UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
+		if(updateGameView) return;
+		EditorApplication.delayCall += () =>
+		{
+			UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
+			updateGameView = false;
+		};
 	}
 
 	bool ValidationError()
