@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 public class NestedPrefab : MonoBehaviour {
-	[SerializeField] GameObject prefab;
+	public GameObject prefab;
 
 	void Start()
 	{
