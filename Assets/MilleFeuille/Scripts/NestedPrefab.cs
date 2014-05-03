@@ -1,3 +1,5 @@
+#define DEBUG
+
 using UnityEngine;
 using System;
 using System.Collections;
@@ -56,23 +58,32 @@ public class NestedPrefab : MonoBehaviour
 
 	void DrawDontEditablePrefab()
 	{
-		if(prefab == null) return;
+		if(prefab == null || !PrefabUpdated()) return;
 
-		var prefabUpdateTime = GetPrefabUpdateTime();
-		if(lastPrefabUpdateTime == prefabUpdateTime) return;
-
-		Debug.Log(string.Format("DrawDontEditablePrefab - {0}", prefab));
 		DeleteChildren();
 
 		var generatedObject = InstantiatePrefab();
 		generatedObject.transform.parent = null;
+#if DEBUG
+		generatedObject.hideFlags = HideFlags.NotEditable;
+#else
 		generatedObject.hideFlags = HideFlags.NotEditable | HideFlags.HideInHierarchy | HideFlags.HideInInspector;
+#endif
 		generatedObject.tag = "EditorOnly";
 		generatedObject.name = string.Format("NestedPrefab-{0}", GetInstanceID());
-		generatedObject.AddComponent<NestedPrefabChild>();
+
+		var child = generatedObject.AddComponent<NestedPrefabChild>();
+		child.stepparent = this.gameObject;
 
 		UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
+	}
+
+	bool PrefabUpdated()
+	{
+		var prefabUpdateTime = GetPrefabUpdateTime();
+		if(lastPrefabUpdateTime == prefabUpdateTime) return false;
 		lastPrefabUpdateTime = GetPrefabUpdateTime();
+		return true;
 	}
 
 	void DeleteChildren()
