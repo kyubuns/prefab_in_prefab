@@ -68,6 +68,7 @@ public class NestedPrefab : MonoBehaviour {
 
 		var generatedObject = InstantiatePrefab();
 		generatedObject.transform.parent = this.transform;
+		generatedObject.hideFlags = HideFlags.HideAndDontSave;
 	}
 
 	void OnDestroyInEditMode()
