@@ -14,11 +14,13 @@ public class NestedPrefab : MonoBehaviour
 
 	void Start()
 	{
+#if UNITY_EDITOR
 		if(!Application.isPlaying)
 		{
 			StartInEditMode();
 			return;
 		}
+#endif
 
 		InstantiatePrefab();
 		Destroy(this.gameObject);
@@ -35,6 +37,17 @@ public class NestedPrefab : MonoBehaviour
 		generatedObject.name = this.name;
 
 		return generatedObject;
+	}
+
+	bool Validation()
+	{
+		// 1.
+		// This game object couldn't have any other component.
+		// Because this game object will delete in Start() in play mode.
+		
+		// 2.
+		// This game object couldn't have children.
+		// For the same reason.
 	}
 
 #if UNITY_EDITOR
@@ -58,7 +71,7 @@ public class NestedPrefab : MonoBehaviour
 
 	void DrawDontEditablePrefab()
 	{
-		if(prefab == null || !PrefabUpdated()) return;
+		if(prefab == null || !Validation() || !PrefabUpdated()) return;
 
 		DeleteChildren();
 
@@ -109,5 +122,6 @@ public class NestedPrefab : MonoBehaviour
 	{
 		UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
 	}
+
 #endif
 }

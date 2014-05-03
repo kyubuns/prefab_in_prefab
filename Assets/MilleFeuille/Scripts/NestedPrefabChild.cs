@@ -4,12 +4,13 @@ using System.Collections;
 [ExecuteInEditMode]
 public class NestedPrefabChild : MonoBehaviour
 {
-	public GameObject stepparent;
-
 	void Awake()
 	{
 		if(Application.isPlaying) Destroy(gameObject);
 	}
+
+#if UNITY_EDITOR
+	public GameObject stepparent;
 
 	void Update()
 	{
@@ -24,4 +25,5 @@ public class NestedPrefabChild : MonoBehaviour
 		this.transform.rotation = stepparent.transform.rotation;
 		this.transform.localScale = stepparent.transform.lossyScale; // set global scale
 	}
+#endif
 }
