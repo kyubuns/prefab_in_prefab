@@ -70,7 +70,7 @@ public class NestedPrefab : MonoBehaviour
 		generatedObject.hideFlags = HideFlags.NotEditable | HideFlags.HideInHierarchy | HideFlags.HideInInspector;
 #endif
 		generatedObject.tag = "EditorOnly";
-		generatedObject.name = string.Format("NestedPrefab-{0}", GetInstanceID());
+		generatedObject.name = string.Format(">NestedPrefab{0}", GetInstanceID());
 
 		var child = generatedObject.AddComponent<NestedPrefabChild>();
 		child.stepparent = this.gameObject;
@@ -90,7 +90,7 @@ public class NestedPrefab : MonoBehaviour
 	{
 		foreach(GameObject obj in GameObject.FindGameObjectsWithTag("EditorOnly"))
 		{
-			if(obj.name != string.Format("NestedPrefab-{0}", GetInstanceID())) continue;
+			if(obj.name != string.Format(">NestedPrefab{0}", GetInstanceID())) continue;
 			DestroyImmediate(obj);
 		}
 	}
