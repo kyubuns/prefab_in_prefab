@@ -12,7 +12,7 @@ public class NestedPrefab : MonoBehaviour
 {
 	public GameObject prefab;
 
-	void Start()
+	void Awake()
 	{
 #if UNITY_EDITOR
 		if(!Application.isPlaying)
@@ -39,17 +39,6 @@ public class NestedPrefab : MonoBehaviour
 		return generatedObject;
 	}
 
-	bool Validation()
-	{
-		// 1.
-		// This game object couldn't have any other component.
-		// Because this game object will delete in Start() in play mode.
-		
-		// 2.
-		// This game object couldn't have children.
-		// For the same reason.
-	}
-
 #if UNITY_EDITOR
 	// ==============
 	//  in edit mode
@@ -71,7 +60,7 @@ public class NestedPrefab : MonoBehaviour
 
 	void DrawDontEditablePrefab()
 	{
-		if(prefab == null || !Validation() || !PrefabUpdated()) return;
+		if(prefab == null || ValidationError() || !PrefabUpdated()) return;
 
 		DeleteChildren();
 
@@ -123,5 +112,34 @@ public class NestedPrefab : MonoBehaviour
 		UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
 	}
 
+	bool ValidationError()
+	{
+		// 1.
+		// This game object can't have any other components.
+		// Because this game object will delete in Start() in play mode.
+		foreach(var component in this.gameObject.GetComponents(typeof(Component)))
+		{
+			if(component as NestedPrefab == null && component as Transform == null)
+			{
+				Debug.LogError("Nested Prefab's game object can't have any other components.");
+				DestroyImmediate(component);
+			}
+		}
+		
+		// 2.
+		// This game object can't have child.
+		// For the same reason.
+		if(this.transform.childCount > 0)
+		{
+			Debug.LogError("Nested Prefab's game object can't have child.");
+			for(int i=this.transform.childCount-1; i>=0; --i)
+			{
+				DestroyImmediate(this.transform.GetChild(i).gameObject);
+			}
+			DeleteChildren();
+		}
+
+		return false;
+	}
 #endif
 }
