@@ -75,7 +75,7 @@ public class NestedPrefab : MonoBehaviour
 		var child = generatedObject.AddComponent<NestedPrefabChild>();
 		child.stepparent = this.gameObject;
 
-		UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
+		UpdateGameView();
 	}
 
 	bool PrefabUpdated()
@@ -103,6 +103,11 @@ public class NestedPrefab : MonoBehaviour
 	DateTime GetPrefabUpdateTime()
 	{
 		return System.IO.File.GetLastWriteTime(GetFilePath());
+	}
+
+	void UpdateGameView()
+	{
+		UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
 	}
 #endif
 }
