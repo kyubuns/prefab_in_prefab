@@ -183,6 +183,10 @@ public class PrefabInPrefab : MonoBehaviour
 		{
 			UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
 			SceneView.RepaintAll();
+
+			// force redraw anything(ex. NGUI's UICamera)
+			gameObject.SetActive(false);
+			gameObject.SetActive(true);
 			updateGameView = false;
 		};
 	}
