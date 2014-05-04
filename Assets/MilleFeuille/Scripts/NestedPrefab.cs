@@ -82,7 +82,7 @@ public class NestedPrefab : MonoBehaviour
 		generatedObject.tag = "EditorOnly";
 		generatedObject.name = string.Format(">NestedPrefab{0}", GetInstanceID());
 
-		var child = generatedObject.AddComponent<NestedPrefabChild>();
+		var child = generatedObject.AddComponent<NestedPrefabDummyChild>();
 		child.stepparent = this.gameObject;
 
 		UpdateGameView();

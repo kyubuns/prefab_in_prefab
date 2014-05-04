@@ -2,10 +2,16 @@
 using System.Collections;
 
 [ExecuteInEditMode]
-public class NestedPrefabChild : MonoBehaviour
+public class NestedPrefabDummyChild : MonoBehaviour
 {
 	void Awake()
 	{
+		if(!name.StartsWith(">NestedPrefab"))
+		{
+			Debug.LogError("This is dummy script.");
+			DestroyImmediate(this);
+			return;
+		}
 		if(Application.isPlaying) Destroy(gameObject);
 	}
 
