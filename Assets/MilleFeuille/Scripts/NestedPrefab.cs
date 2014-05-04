@@ -177,6 +177,8 @@ public class NestedPrefab : MonoBehaviour
 				if(this.transform.parent == null)
 				{
 					Debug.LogError("Can't attach NestedPrefab to root gameobject.");
+					prefab = null;
+					DeleteChildren();
 				}
 				else
 				{
