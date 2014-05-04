@@ -39,7 +39,26 @@ public class PrefabInPrefab : MonoBehaviour
 		// change parent
 		generatedObject.transform.parent = this.transform;
 
+		SetChildActive();
+
 		return generatedObject;
+	}
+
+	void OnDisable()
+	{
+		SetChildActive();
+	}
+
+	void OnEnable()
+	{
+		SetChildActive();
+	}
+
+	void SetChildActive()
+	{
+		// when gameObject.active is false, can't find by tag.
+		if(generatedObject == null || generatedObject.gameObject == null || generatedObject.gameObject.renderer == null) return;
+		generatedObject.gameObject.renderer.enabled = this.gameObject.activeInHierarchy;
 	}
 
 #if UNITY_EDITOR
