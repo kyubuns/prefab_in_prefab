@@ -127,6 +127,7 @@ public class NestedPrefab : MonoBehaviour
 		EditorApplication.delayCall += () =>
 		{
 			UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
+			SceneView.RepaintAll();
 			updateGameView = false;
 		};
 	}
