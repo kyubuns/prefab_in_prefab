@@ -126,6 +126,7 @@ public class NestedPrefab : MonoBehaviour
 	void UpdateGameView()
 	{
 		if(updateGameView) return;
+		updateGameView = true;
 		EditorApplication.delayCall += () =>
 		{
 			UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
