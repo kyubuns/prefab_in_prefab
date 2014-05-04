@@ -10,9 +10,7 @@ prefab_in_prefab
 できること
 * 'Prefab in Prefab' in play mode
 * 'Prefab in Prefab' in edit mode
-
-今はまだできないこと
-* Prefab in Prefab in Prefab
+* 'Prefab in Prefab in Prefab in ...'
 
 困ってること
-* 英語(コメントの英文とか)
+* 英語がひどい
