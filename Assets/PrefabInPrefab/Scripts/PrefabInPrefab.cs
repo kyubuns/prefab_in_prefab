@@ -57,8 +57,8 @@ public class PrefabInPrefab : MonoBehaviour
 	void SetChildActive()
 	{
 		// when gameObject.active is false, can't find by tag.
-		if(generatedObject == null || generatedObject.gameObject == null || generatedObject.gameObject.renderer == null) return;
-		generatedObject.gameObject.renderer.enabled = this.gameObject.activeInHierarchy;
+		if(generatedObject == null || generatedObject.renderer == null) return;
+		generatedObject.renderer.enabled = this.gameObject.activeInHierarchy;
 	}
 
 #if UNITY_EDITOR
