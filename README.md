@@ -5,7 +5,7 @@ prefab_in_prefab
 * prefab in prefab for unity4.x
 
 使い方
-* そのうち書く。
+* PrefabInPrefabコンポーネントを貼り付けて、Prefabを設定するだけ！
 
 できること
 * 'Prefab in Prefab' in play/edit mode
