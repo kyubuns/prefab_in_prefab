@@ -114,6 +114,15 @@ public class PrefabInPrefab : MonoBehaviour
 
 	void DrawDontEditablePrefab()
 	{
+		// param changed
+		if(prefab == null && Child != null)
+		{
+			DeleteChildren();
+			UpdateGameView();
+			redrawCount = -1;
+			return;
+		}
+
 		if(prefab == null) return;
 		if(Redraw == redrawCount && !PrefabUpdated()) return;
 		if(ValidationError()) return;
