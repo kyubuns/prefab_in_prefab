@@ -178,6 +178,7 @@ public class NestedPrefab : MonoBehaviour
 
 		// 4.
 		// This game object can't be root.
+		// Because this is not in prefab.
 		if(this.transform.parent == null)
 		{
 			EditorApplication.delayCall += () =>
