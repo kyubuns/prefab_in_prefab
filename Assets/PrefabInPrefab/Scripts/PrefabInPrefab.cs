@@ -139,6 +139,7 @@ public class PrefabInPrefab : MonoBehaviour
 
 		var child = generatedObject.AddComponent<VirtualPrefab>();
 		child.stepparent = this.gameObject;
+		child.UpdateTransform();
 
 		SetChildActive();
 		UpdateGameView();
