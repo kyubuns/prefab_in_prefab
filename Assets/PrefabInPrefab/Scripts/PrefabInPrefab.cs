@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using System.Reflection;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -11,6 +12,7 @@ public class PrefabInPrefab : MonoBehaviour
 	public GameObject Child { get { return generatedObject; } }
 
 	[SerializeField] GameObject prefab;
+	[SerializeField] bool moveComponents;
 	private GameObject generatedObject;
 
 	void Awake()
@@ -40,8 +42,24 @@ public class PrefabInPrefab : MonoBehaviour
 		generatedObject.transform.parent = this.transform;
 
 		SetChildActive();
+		if(moveComponents) MoveComponents(this.gameObject, generatedObject);
 
 		return generatedObject;
+	}
+
+	void MoveComponents(GameObject from, GameObject to)
+	{
+		var components = from.GetComponents(typeof(Component));
+		foreach(var component in components)
+		{
+			if(component as Transform != null || component as PrefabInPrefab != null) continue;
+
+			Type type = component.GetType();
+			var copy = to.AddComponent(type);
+			var fields = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+			foreach (var field in fields) field.SetValue(copy, field.GetValue(component));
+			if(Application.isPlaying) Destroy(component);
+		}
 	}
 
 	void OnDisable()
