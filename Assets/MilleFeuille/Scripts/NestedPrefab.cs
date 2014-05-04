@@ -173,6 +173,27 @@ public class NestedPrefab : MonoBehaviour
 		}
 		DestroyImmediate(testObject);
 
+		// 4.
+		// This game object can't be root.
+		if(this.transform.parent == null)
+		{
+			EditorApplication.delayCall += () =>
+			{
+				if(this.transform.parent == null)
+				{
+					Debug.LogError("Can't attach NestedPrefab to root gameobject.");
+				}
+				else
+				{
+					redrawCount--; //force redraw
+					DrawDontEditablePrefab();
+				}
+			};
+
+			// stop
+			return true;
+		}
+
 		return false;
 	}
 #endif
