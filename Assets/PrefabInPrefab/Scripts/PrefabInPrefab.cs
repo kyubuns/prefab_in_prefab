@@ -1,5 +1,3 @@
-#define DEBUG
-
 using UnityEngine;
 using System;
 using System.Collections;
@@ -10,7 +8,7 @@ using UnityEditor;
 [ExecuteInEditMode]
 public class PrefabInPrefab : MonoBehaviour
 {
-	public GameObject prefab;
+	[SerializeField] GameObject prefab;
 
 	void Awake()
 	{
@@ -90,11 +88,8 @@ public class PrefabInPrefab : MonoBehaviour
 
 		var generatedObject = InstantiatePrefab();
 		generatedObject.transform.parent = null;
-#if DEBUG
-		generatedObject.hideFlags = HideFlags.NotEditable;
-#else
-		generatedObject.hideFlags = HideFlags.NotEditable | HideFlags.HideInHierarchy | HideFlags.HideInInspector;
-#endif
+		//generatedObject.hideFlags = HideFlags.NotEditable;
+		generatedObject.hideFlags = HideFlags.NotEditable | HideFlags.HideInHierarchy | HideFlags.HideInInspector; // for deubug
 		generatedObject.tag = "EditorOnly";
 		generatedObject.name = string.Format(">NestedPrefab{0}", GetInstanceID());
 

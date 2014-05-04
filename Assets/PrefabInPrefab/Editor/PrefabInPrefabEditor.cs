@@ -4,9 +4,16 @@ using System.Collections;
 
 [CustomEditor(typeof(PrefabInPrefab))]
 public class PrefabInPrefabEditor : Editor {
+	private SerializedProperty prefab;
+
+	void OnEnable()
+	{
+		prefab = serializedObject.FindProperty("prefab");
+	}
+
 	public override void OnInspectorGUI() {
-		var obj = target as PrefabInPrefab;
-		obj.prefab = (GameObject)EditorGUILayout.ObjectField("Prefab", obj.prefab, typeof(GameObject), false);
-		if(GUI.changed) EditorUtility.SetDirty(target);
+		serializedObject.Update();
+		prefab.objectReferenceValue = (GameObject)EditorGUILayout.ObjectField("Prefab", prefab.objectReferenceValue, typeof(GameObject), false);
+		serializedObject.ApplyModifiedProperties();
 	}
 }
