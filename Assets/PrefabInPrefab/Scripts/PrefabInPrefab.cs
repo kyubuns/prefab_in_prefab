@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -175,6 +176,15 @@ public class PrefabInPrefab : MonoBehaviour
 
 	bool ValidationError()
 	{
+		// check circular reference
+		// って言うらしい。かっこいい。.
+		if(CheckCircularReference(this, null))
+		{
+			Debug.LogError("Can't circular reference.");
+			Reset();
+			return true;
+		}
+
 		// This game object can't be root.
 		// Because this is not in prefab.
 		if(this.transform.parent == null)
@@ -186,8 +196,7 @@ public class PrefabInPrefab : MonoBehaviour
 				if(this.transform.parent == null)
 				{
 					Debug.LogError("Can't attach PrefabInPrefab to root gameobject.");
-					prefab = null;
-					DeleteChildren();
+					Reset();
 				}
 				else
 				{
@@ -198,6 +207,30 @@ public class PrefabInPrefab : MonoBehaviour
 
 			// stop
 			return true;
+		}
+
+		return false;
+	}
+
+	void Reset()
+	{
+		prefab = null;
+		DeleteChildren();
+	}
+
+	bool CheckCircularReference(PrefabInPrefab target, List<int> usedPrefabs)
+	{
+		if(target.prefab == null) return false;
+		if(usedPrefabs == null) usedPrefabs = new List<int>();
+
+		int id = target.prefab.GetInstanceID();
+		if(usedPrefabs.Contains(id)) return true;
+		usedPrefabs.Add(id);
+
+		foreach(var nextTarget in ((GameObject)target.prefab).GetComponentsInChildren<PrefabInPrefab>(true))
+		{
+			if(nextTarget == this) continue;
+			if(CheckCircularReference(nextTarget, usedPrefabs)) return true;
 		}
 
 		return false;
