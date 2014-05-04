@@ -8,7 +8,10 @@ using UnityEditor;
 [ExecuteInEditMode]
 public class PrefabInPrefab : MonoBehaviour
 {
+	public GameObject Child { get { return generatedObject; } }
+
 	[SerializeField] GameObject prefab;
+	private GameObject generatedObject;
 
 	void Awake()
 	{
@@ -19,28 +22,22 @@ public class PrefabInPrefab : MonoBehaviour
 			return;
 		}
 #endif
-
-		if(prefab != null)
-		{
-			InstantiatePrefab();
-			Destroy(this.gameObject);
-		}
-		else
-		{
-			// don't delete game object when prefab is null.
-			Destroy(this);
-		}
+		if(prefab == null) return;
+		InstantiatePrefab();
 	}
 
 	GameObject InstantiatePrefab()
 	{
-		var generatedObject = Instantiate(prefab) as GameObject;
+		generatedObject = Instantiate(prefab) as GameObject;
 
+		// calc transform to base parent
 		generatedObject.transform.parent = this.transform.parent.transform;
 		generatedObject.transform.position = this.transform.position;
 		generatedObject.transform.rotation = this.transform.rotation;
 		generatedObject.transform.localScale = this.transform.localScale;
-		generatedObject.name = this.name;
+
+		// change parent
+		generatedObject.transform.parent = this.transform;
 
 		return generatedObject;
 	}
@@ -88,8 +85,8 @@ public class PrefabInPrefab : MonoBehaviour
 
 		var generatedObject = InstantiatePrefab();
 		generatedObject.transform.parent = null;
-		//generatedObject.hideFlags = HideFlags.NotEditable;
-		generatedObject.hideFlags = HideFlags.NotEditable | HideFlags.HideInHierarchy | HideFlags.HideInInspector; // for deubug
+		generatedObject.hideFlags = HideFlags.NotEditable; // for debug
+		//generatedObject.hideFlags = HideFlags.NotEditable | HideFlags.HideInHierarchy | HideFlags.HideInInspector;
 		generatedObject.tag = "EditorOnly";
 		generatedObject.name = string.Format(">NestedPrefab{0}", GetInstanceID());
 
@@ -141,30 +138,6 @@ public class PrefabInPrefab : MonoBehaviour
 	bool ValidationError()
 	{
 		// 1.
-		// This game object can't have any other components.
-		// Because this game object will delete in Start() in play mode.
-		foreach(var component in this.gameObject.GetComponents(typeof(Component)))
-		{
-			if(component as PrefabInPrefab == null && component as Transform == null)
-			{
-				Debug.LogError("Nested Prefab's game object can't have any other components.");
-				DestroyImmediate(component);
-			}
-		}
-		
-		// 2.
-		// This game object can't have child.
-		// For the same reason.
-		if(this.transform.childCount > 0)
-		{
-			Debug.LogError("Nested Prefab's game object can't have child.");
-			for(int i=this.transform.childCount-1; i>=0; --i)
-			{
-				DestroyImmediate(this.transform.GetChild(i).gameObject);
-			}
-		}
-
-		// 3.
 		// Prefab in Prefab in Prefab
 		// any problems.
 		// ex. A in B in A in B in ...
@@ -177,7 +150,7 @@ public class PrefabInPrefab : MonoBehaviour
 			return true;
 		}
 
-		// 4.
+		// 2.
 		// This game object can't be root.
 		// Because this is not in prefab.
 		if(this.transform.parent == null)
