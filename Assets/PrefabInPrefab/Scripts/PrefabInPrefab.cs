@@ -44,9 +44,7 @@ public class PrefabInPrefab : MonoBehaviour
 		// change parent
 		generatedObject.transform.parent = this.transform;
 
-		SetChildActive();
 		if(moveComponents) MoveComponents(this.gameObject, generatedObject);
-
 		return generatedObject;
 	}
 
@@ -63,23 +61,6 @@ public class PrefabInPrefab : MonoBehaviour
 			foreach (var field in fields) field.SetValue(copy, field.GetValue(component));
 			if(Application.isPlaying) Destroy(component);
 		}
-	}
-
-	void OnDisable()
-	{
-		SetChildActive();
-	}
-
-	void OnEnable()
-	{
-		SetChildActive();
-	}
-
-	void SetChildActive()
-	{
-		// when gameObject.active is false, can't find by tag.
-		if(generatedObject == null || generatedObject.renderer == null) return;
-		generatedObject.renderer.enabled = this.gameObject.activeInHierarchy;
 	}
 
 #if UNITY_EDITOR
@@ -114,6 +95,22 @@ public class PrefabInPrefab : MonoBehaviour
 		DrawDontEditablePrefab();
 	}
 
+	void OnDisable()
+	{
+		SetChildActive();
+	}
+
+	void OnEnable()
+	{
+		SetChildActive();
+	}
+
+	void SetChildActive()
+	{
+		if(Application.isPlaying || generatedObject == null) return;
+		generatedObject.GetComponent<VirtualPrefab>().SetActiveInEditor(this.gameObject.activeInHierarchy);
+	}
+
 	void DrawDontEditablePrefab()
 	{
 		if(prefab == null) return;
@@ -133,6 +130,7 @@ public class PrefabInPrefab : MonoBehaviour
 		var child = generatedObject.AddComponent<VirtualPrefab>();
 		child.stepparent = this.gameObject;
 
+		SetChildActive();
 		UpdateGameView();
 	}
 
@@ -177,21 +175,6 @@ public class PrefabInPrefab : MonoBehaviour
 
 	bool ValidationError()
 	{
-		// 1.
-		// Prefab in Prefab in Prefab
-		// any problems.
-		// ex. A in B in A in B in ...
-		var prefabInPrefabs = ((GameObject)prefab).GetComponentsInChildren<PrefabInPrefab>(true);
-		if(prefabInPrefabs.Length > 0)
-		{
-			Debug.LogError("Can't prefab in prefab in prefab.");
-			prefab = null;
-			DeleteChildren();
-			return true;
-		}
-		*/
-
-		// 2.
 		// This game object can't be root.
 		// Because this is not in prefab.
 		if(this.transform.parent == null)

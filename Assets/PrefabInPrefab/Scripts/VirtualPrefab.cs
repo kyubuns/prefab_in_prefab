@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace PrefabInPrefab
 {
@@ -23,6 +24,11 @@ public class VirtualPrefab : MonoBehaviour
 
 	void Update()
 	{
+		UpdateTransform();
+	}
+
+	public void UpdateTransform()
+	{
 		if(Application.isPlaying) return;
 
 		if(stepparent == null)
@@ -33,6 +39,40 @@ public class VirtualPrefab : MonoBehaviour
 		this.transform.position = stepparent.transform.position;
 		this.transform.rotation = stepparent.transform.rotation;
 		this.transform.localScale = stepparent.transform.lossyScale; // set global scale
+
+		var virtualPrefabs = GetChildVirtualPrefabs();
+		foreach(var virtualPrefab in virtualPrefabs)
+		{
+			virtualPrefab.UpdateTransform();
+		}
+	}
+
+	public void SetActiveInEditor(bool enabled)
+	{
+		// when gameObject.active is false, can't find by tag.
+		foreach(var renderer in GetComponentsInChildren<Renderer>())
+		{
+			renderer.enabled = enabled;
+		}
+
+		// and children
+		var virtualPrefabs = GetChildVirtualPrefabs();
+		foreach(var virtualPrefab in virtualPrefabs)
+		{
+			virtualPrefab.SetActiveInEditor(enabled);
+		}
+	}
+
+	List<VirtualPrefab> GetChildVirtualPrefabs()
+	{
+		var virtualPrefabs = new List<VirtualPrefab>();
+		var prefabInPrefabs = GetComponentsInChildren<PrefabInPrefab>(true);
+		foreach(var prefabInPrefab in prefabInPrefabs)
+		{
+			if(prefabInPrefab.Child == null) continue;
+			virtualPrefabs.Add(prefabInPrefab.Child.GetComponent<VirtualPrefab>());
+		}
+		return virtualPrefabs;
 	}
 #endif
 }
