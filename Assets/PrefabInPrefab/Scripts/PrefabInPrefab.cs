@@ -8,7 +8,7 @@ using UnityEditor;
 #endif
 
 [ExecuteInEditMode]
-public class NestedPrefab : MonoBehaviour
+public class PrefabInPrefab : MonoBehaviour
 {
 	public GameObject prefab;
 
@@ -87,7 +87,7 @@ public class NestedPrefab : MonoBehaviour
 		generatedObject.tag = "EditorOnly";
 		generatedObject.name = string.Format(">NestedPrefab{0}", GetInstanceID());
 
-		var child = generatedObject.AddComponent<NestedPrefabDummyChild>();
+		var child = generatedObject.AddComponent<VirtualPrefab>();
 		child.stepparent = this.gameObject;
 
 		UpdateGameView();
@@ -139,7 +139,7 @@ public class NestedPrefab : MonoBehaviour
 		// Because this game object will delete in Start() in play mode.
 		foreach(var component in this.gameObject.GetComponents(typeof(Component)))
 		{
-			if(component as NestedPrefab == null && component as Transform == null)
+			if(component as PrefabInPrefab == null && component as Transform == null)
 			{
 				Debug.LogError("Nested Prefab's game object can't have any other components.");
 				DestroyImmediate(component);
@@ -162,7 +162,7 @@ public class NestedPrefab : MonoBehaviour
 		// Prefab in Prefab in Prefab
 		// any problems.
 		// ex. A in B in A in B in ...
-		var nestedPrefabs = ((GameObject)prefab).GetComponentsInChildren<NestedPrefab>(true);
+		var nestedPrefabs = ((GameObject)prefab).GetComponentsInChildren<PrefabInPrefab>(true);
 		if(nestedPrefabs.Length > 0)
 		{
 			Debug.LogError("Can't prefab in prefab in prefab.");

@@ -2,10 +2,10 @@
 using UnityEditor;
 using System.Collections;
 
-[CustomEditor(typeof(NestedPrefab))]
-public class NestedPrefabEditor : Editor {
+[CustomEditor(typeof(PrefabInPrefab))]
+public class PrefabInPrefabEditor : Editor {
 	public override void OnInspectorGUI() {
-		NestedPrefab obj = target as NestedPrefab;
+		var obj = target as PrefabInPrefab;
 		obj.prefab = (GameObject)EditorGUILayout.ObjectField("Prefab", obj.prefab, typeof(GameObject), false);
 		if(GUI.changed) EditorUtility.SetDirty(target);
 	}

@@ -2,7 +2,7 @@
 using UnityEditor;
 using System.Collections;
 
-public class NestedPrefabRemover : UnityEditor.AssetModificationProcessor {
+public class PrefabInPrefabRemover : UnityEditor.AssetModificationProcessor {
 	public static bool Removed { get; private set; }
 
 	static string[] OnWillSaveAssets (string[] paths) {
@@ -12,7 +12,7 @@ public class NestedPrefabRemover : UnityEditor.AssetModificationProcessor {
 			Object.DestroyImmediate(obj);
 			EditorApplication.delayCall += () =>
 			{
-				NestedPrefab.Redraw++;
+				PrefabInPrefab.Redraw++;
 				UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
 				SceneView.RepaintAll();
 			};

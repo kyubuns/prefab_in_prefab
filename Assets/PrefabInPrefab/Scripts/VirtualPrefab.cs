@@ -2,7 +2,7 @@
 using System.Collections;
 
 [ExecuteInEditMode]
-public class NestedPrefabDummyChild : MonoBehaviour
+public class VirtualPrefab : MonoBehaviour
 {
 	void Awake()
 	{
