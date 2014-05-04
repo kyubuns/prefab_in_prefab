@@ -122,8 +122,8 @@ public class PrefabInPrefab : MonoBehaviour
 
 		var generatedObject = InstantiatePrefab();
 		generatedObject.transform.parent = null;
-		generatedObject.hideFlags = HideFlags.NotEditable; // for debug
-		//generatedObject.hideFlags = HideFlags.NotEditable | HideFlags.HideInHierarchy | HideFlags.HideInInspector;
+		//generatedObject.hideFlags = HideFlags.NotEditable; // for debug
+		generatedObject.hideFlags = HideFlags.NotEditable | HideFlags.HideInHierarchy | HideFlags.HideInInspector;
 		generatedObject.tag = "EditorOnly";
 		generatedObject.name = string.Format(">PrefabInPrefab{0}", GetInstanceID());
 
