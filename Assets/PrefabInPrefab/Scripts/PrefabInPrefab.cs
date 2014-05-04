@@ -52,10 +52,21 @@ public class PrefabInPrefab : MonoBehaviour
 	//  in edit mode
 	// ==============
 
-	public static int Redraw = 0;
+	private static int Redraw = 0;
 	private static bool updateGameView = false;
 	private DateTime lastPrefabUpdateTime;
 	private int redrawCount = 0;
+
+	public static void RequestRedraw()
+	{
+		if(Application.isPlaying) return;
+		EditorApplication.delayCall += () =>
+		{
+			Redraw++;
+			UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
+			SceneView.RepaintAll();
+		};
+	}
 
 	void StartInEditMode()
 	{

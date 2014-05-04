@@ -10,12 +10,7 @@ public class PrefabInPrefabRemover : UnityEditor.AssetModificationProcessor {
 		{
 			if(!obj.name.StartsWith(">NestedPrefab")) continue;
 			Object.DestroyImmediate(obj);
-			EditorApplication.delayCall += () =>
-			{
-				PrefabInPrefab.Redraw++;
-				UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
-				SceneView.RepaintAll();
-			};
+			PrefabInPrefab.RequestRedraw();
 		}
 		return paths;
 	}
