@@ -6,7 +6,6 @@ public class NestedPrefabRemover : UnityEditor.AssetModificationProcessor {
 	public static bool Removed { get; private set; }
 
 	static string[] OnWillSaveAssets (string[] paths) {
-		Debug.Log("OnWillSaveAssets");
 		foreach(GameObject obj in GameObject.FindGameObjectsWithTag("EditorOnly"))
 		{
 			if(!obj.name.StartsWith(">NestedPrefab")) continue;

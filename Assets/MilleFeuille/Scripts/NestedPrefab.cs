@@ -67,7 +67,9 @@ public class NestedPrefab : MonoBehaviour
 		if(ValidationError()) return;
 		redrawCount = Redraw;
 
+#if DEBUG
 		Debug.Log("DrawDontEditablePrefab");
+#endif
 		DeleteChildren();
 
 		var generatedObject = InstantiatePrefab();
@@ -125,7 +127,9 @@ public class NestedPrefab : MonoBehaviour
 
 	bool ValidationError()
 	{
+#if DEBUG
 		Debug.Log("ValidationError");
+#endif
 
 		// 1.
 		// This game object can't have any other components.
