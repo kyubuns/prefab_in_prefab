@@ -22,8 +22,16 @@ public class NestedPrefab : MonoBehaviour
 		}
 #endif
 
-		InstantiatePrefab();
-		Destroy(this.gameObject);
+		if(prefab != null)
+		{
+			InstantiatePrefab();
+			Destroy(this.gameObject);
+		}
+		else
+		{
+			// don't delete game object when prefab is null.
+			Destroy(this);
+		}
 	}
 
 	GameObject InstantiatePrefab()
