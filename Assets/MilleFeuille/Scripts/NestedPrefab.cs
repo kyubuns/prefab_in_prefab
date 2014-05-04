@@ -159,19 +159,14 @@ public class NestedPrefab : MonoBehaviour
 		// Prefab in Prefab in Prefab
 		// any problems.
 		// ex. A in B in A in B in ...
-		var testObject = Instantiate(prefab) as GameObject;
-		var components = testObject.GetComponentsInChildren(typeof(Component));
-		foreach(var component in components)
+		var nestedPrefabs = ((GameObject)prefab).GetComponentsInChildren<NestedPrefab>(true);
+		if(nestedPrefabs.Length > 0)
 		{
-			if(component as NestedPrefab == null) continue;
-
 			Debug.LogError("Can't prefab in prefab in prefab.");
 			prefab = null;
-			DestroyImmediate(testObject);
 			DeleteChildren();
 			return true;
 		}
-		DestroyImmediate(testObject);
 
 		// 4.
 		// This game object can't be root.
