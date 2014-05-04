@@ -133,10 +133,12 @@ public class PrefabInPrefab : MonoBehaviour
 		var generatedObject = InstantiatePrefab();
 		// 自分の1つ上のGameObjectが所属しているPrefabのRootの親の下.
 		generatedObject.transform.parent = PrefabUtility.FindPrefabRoot(transform.parent.gameObject).transform.parent.transform;
-		//generatedObject.hideFlags = HideFlags.NotEditable; // for debug
-		generatedObject.hideFlags = HideFlags.NotEditable | HideFlags.HideInHierarchy | HideFlags.HideInInspector;
-		generatedObject.tag = "EditorOnly";
 		generatedObject.name = string.Format(">PrefabInPrefab{0}", GetInstanceID());
+		generatedObject.tag = "EditorOnly";
+		foreach(var childTransform in generatedObject.GetComponentsInChildren<Transform>())
+		{
+			childTransform.gameObject.hideFlags = HideFlags.NotEditable | HideFlags.HideInHierarchy | HideFlags.HideInInspector;
+		}
 
 		var child = generatedObject.AddComponent<VirtualPrefab>();
 		child.stepparent = this.gameObject;
