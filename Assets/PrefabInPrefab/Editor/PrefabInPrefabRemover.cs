@@ -8,7 +8,7 @@ public class PrefabInPrefabRemover : UnityEditor.AssetModificationProcessor {
 	static string[] OnWillSaveAssets (string[] paths) {
 		foreach(GameObject obj in GameObject.FindGameObjectsWithTag("EditorOnly"))
 		{
-			if(!obj.name.StartsWith(">NestedPrefab")) continue;
+			if(!obj.name.StartsWith(">PrefabInPrefab")) continue;
 			Object.DestroyImmediate(obj);
 			PrefabInPrefab.RequestRedraw();
 		}

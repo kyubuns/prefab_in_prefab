@@ -88,7 +88,7 @@ public class PrefabInPrefab : MonoBehaviour
 		generatedObject.hideFlags = HideFlags.NotEditable; // for debug
 		//generatedObject.hideFlags = HideFlags.NotEditable | HideFlags.HideInHierarchy | HideFlags.HideInInspector;
 		generatedObject.tag = "EditorOnly";
-		generatedObject.name = string.Format(">NestedPrefab{0}", GetInstanceID());
+		generatedObject.name = string.Format(">PrefabInPrefab{0}", GetInstanceID());
 
 		var child = generatedObject.AddComponent<VirtualPrefab>();
 		child.stepparent = this.gameObject;
@@ -108,7 +108,7 @@ public class PrefabInPrefab : MonoBehaviour
 	{
 		foreach(GameObject obj in GameObject.FindGameObjectsWithTag("EditorOnly"))
 		{
-			if(obj.name != string.Format(">NestedPrefab{0}", GetInstanceID())) continue;
+			if(obj.name != string.Format(">PrefabInPrefab{0}", GetInstanceID())) continue;
 			DestroyImmediate(obj);
 		}
 	}
@@ -141,8 +141,8 @@ public class PrefabInPrefab : MonoBehaviour
 		// Prefab in Prefab in Prefab
 		// any problems.
 		// ex. A in B in A in B in ...
-		var nestedPrefabs = ((GameObject)prefab).GetComponentsInChildren<PrefabInPrefab>(true);
-		if(nestedPrefabs.Length > 0)
+		var prefabInPrefabs = ((GameObject)prefab).GetComponentsInChildren<PrefabInPrefab>(true);
+		if(prefabInPrefabs.Length > 0)
 		{
 			Debug.LogError("Can't prefab in prefab in prefab.");
 			prefab = null;
@@ -159,7 +159,7 @@ public class PrefabInPrefab : MonoBehaviour
 			{
 				if(this.transform.parent == null)
 				{
-					Debug.LogError("Can't attach NestedPrefab to root gameobject.");
+					Debug.LogError("Can't attach PrefabInPrefab to root gameobject.");
 					prefab = null;
 					DeleteChildren();
 				}

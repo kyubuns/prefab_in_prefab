@@ -6,7 +6,7 @@ public class VirtualPrefab : MonoBehaviour
 {
 	void Awake()
 	{
-		if(!name.StartsWith(">NestedPrefab"))
+		if(!name.StartsWith(">PrefabInPrefab"))
 		{
 			Debug.LogError("This is dummy script.");
 			DestroyImmediate(this);
