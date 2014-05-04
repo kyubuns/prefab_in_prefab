@@ -132,7 +132,20 @@ public class PrefabInPrefab : MonoBehaviour
 
 		var generatedObject = InstantiatePrefab();
 		// 自分の1つ上のGameObjectが所属しているPrefabのRootの親の下.
-		generatedObject.transform.parent = PrefabUtility.FindPrefabRoot(transform.parent.gameObject).transform.parent.transform;
+		var foundRoot = PrefabUtility.FindPrefabRoot(transform.parent.gameObject).transform.parent;
+		if(foundRoot == null)
+		{
+			// 親オブジェクトは、ドラッグアンドドロップした瞬間は見つからない
+			EditorApplication.delayCall += () =>
+			{
+				if(generatedObject == null) return;
+				generatedObject.transform.parent = PrefabUtility.FindPrefabRoot(transform.parent.gameObject).transform.parent.transform;
+			};
+		}
+		else
+		{
+			generatedObject.transform.parent = foundRoot.transform;
+		}
 		generatedObject.name = string.Format(">PrefabInPrefab{0}", GetInstanceID());
 		generatedObject.tag = "EditorOnly";
 		foreach(var childTransform in generatedObject.GetComponentsInChildren<Transform>())
