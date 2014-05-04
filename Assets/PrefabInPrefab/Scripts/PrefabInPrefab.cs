@@ -6,6 +6,9 @@ using System.Reflection;
 using UnityEditor;
 #endif
 
+namespace PrefabInPrefab
+{
+
 [ExecuteInEditMode]
 public class PrefabInPrefab : MonoBehaviour
 {
@@ -214,4 +217,6 @@ public class PrefabInPrefab : MonoBehaviour
 		return false;
 	}
 #endif
+}
+
 }

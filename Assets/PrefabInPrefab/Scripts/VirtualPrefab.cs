@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+namespace PrefabInPrefab
+{
+
 [ExecuteInEditMode]
 public class VirtualPrefab : MonoBehaviour
 {
@@ -32,4 +35,6 @@ public class VirtualPrefab : MonoBehaviour
 		this.transform.localScale = stepparent.transform.lossyScale; // set global scale
 	}
 #endif
+}
+
 }

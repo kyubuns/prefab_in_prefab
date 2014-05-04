@@ -2,6 +2,9 @@
 using UnityEditor;
 using System.Collections;
 
+namespace PrefabInPrefab
+{
+
 [CustomEditor(typeof(PrefabInPrefab))]
 public class PrefabInPrefabEditor : Editor {
 	private SerializedProperty prefab;
@@ -19,4 +22,6 @@ public class PrefabInPrefabEditor : Editor {
 		moveComponents.boolValue = EditorGUILayout.Toggle("Move Components", moveComponents.boolValue);
 		serializedObject.ApplyModifiedProperties();
 	}
+}
+
 }

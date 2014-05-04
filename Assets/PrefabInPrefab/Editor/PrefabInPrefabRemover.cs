@@ -2,6 +2,9 @@
 using UnityEditor;
 using System.Collections;
 
+namespace PrefabInPrefab
+{
+
 public class PrefabInPrefabRemover : UnityEditor.AssetModificationProcessor {
 	public static bool Removed { get; private set; }
 
@@ -14,4 +17,6 @@ public class PrefabInPrefabRemover : UnityEditor.AssetModificationProcessor {
 		}
 		return paths;
 	}
+}
+
 }
