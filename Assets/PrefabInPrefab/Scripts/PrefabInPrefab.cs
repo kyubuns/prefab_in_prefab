@@ -131,7 +131,8 @@ public class PrefabInPrefab : MonoBehaviour
 		DeleteChildren();
 
 		var generatedObject = InstantiatePrefab();
-		generatedObject.transform.parent = null;
+		// 自分の1つ上のGameObjectが所属しているPrefabのRootの親の下.
+		generatedObject.transform.parent = PrefabUtility.FindPrefabRoot(transform.parent.gameObject).transform.parent.transform;
 		//generatedObject.hideFlags = HideFlags.NotEditable; // for debug
 		generatedObject.hideFlags = HideFlags.NotEditable | HideFlags.HideInHierarchy | HideFlags.HideInInspector;
 		generatedObject.tag = "EditorOnly";

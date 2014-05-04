@@ -38,7 +38,7 @@ public class VirtualPrefab : MonoBehaviour
 		}
 		this.transform.position = stepparent.transform.position;
 		this.transform.rotation = stepparent.transform.rotation;
-		this.transform.localScale = stepparent.transform.lossyScale; // set global scale
+		this.transform.localScale = stepparent.transform.localScale;
 
 		var virtualPrefabs = GetChildVirtualPrefabs();
 		foreach(var virtualPrefab in virtualPrefabs)
