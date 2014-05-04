@@ -186,7 +186,7 @@ public class NestedPrefab : MonoBehaviour
 				}
 				else
 				{
-					redrawCount--; //force redraw
+					redrawCount = -1; //force redraw
 					DrawDontEditablePrefab();
 				}
 			};
