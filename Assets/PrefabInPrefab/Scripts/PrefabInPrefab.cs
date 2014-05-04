@@ -189,12 +189,15 @@ public class PrefabInPrefab : MonoBehaviour
 			DeleteChildren();
 			return true;
 		}
+		*/
 
 		// 2.
 		// This game object can't be root.
 		// Because this is not in prefab.
 		if(this.transform.parent == null)
 		{
+			// copy&paseした時に、なぜか一瞬だけparentがnullになるので、
+			// 少し遅らせる.
 			EditorApplication.delayCall += () =>
 			{
 				if(this.transform.parent == null)
