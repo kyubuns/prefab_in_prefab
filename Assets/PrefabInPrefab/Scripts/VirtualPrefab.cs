@@ -47,22 +47,6 @@ public class VirtualPrefab : MonoBehaviour
 		}
 	}
 
-	public void SetActiveInEditor(bool enabled)
-	{
-		// when gameObject.active is false, can't find by tag.
-		foreach(var renderer in GetComponentsInChildren<Renderer>())
-		{
-			renderer.enabled = enabled;
-		}
-
-		// and children
-		var virtualPrefabs = GetChildVirtualPrefabs();
-		foreach(var virtualPrefab in virtualPrefabs)
-		{
-			virtualPrefab.SetActiveInEditor(enabled);
-		}
-	}
-
 	List<VirtualPrefab> GetChildVirtualPrefabs()
 	{
 		var virtualPrefabs = new List<VirtualPrefab>();

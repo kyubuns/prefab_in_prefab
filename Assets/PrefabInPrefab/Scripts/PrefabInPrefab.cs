@@ -17,7 +17,6 @@ public class PrefabInPrefab : MonoBehaviour
 
 	[SerializeField] GameObject prefab;
 	[SerializeField] bool moveComponents;
-	[SerializeField] bool previewInEditor = true;
 	private GameObject generatedObject;
 
 	void Awake()
@@ -74,6 +73,13 @@ public class PrefabInPrefab : MonoBehaviour
 	private static bool updateGameView = false;
 	private DateTime lastPrefabUpdateTime;
 	private int redrawCount = 0;
+	private bool redrawForce = false;
+	[SerializeField] bool previewInEditor = true;
+
+	private bool visibleVirtualPrefab
+	{
+		get { return previewInEditor && this.gameObject.activeInHierarchy && this.enabled; }
+	}
 
 	public static void RequestRedraw()
 	{
@@ -99,24 +105,14 @@ public class PrefabInPrefab : MonoBehaviour
 
 	void OnDisable()
 	{
-		SetChildActive();
-	}
-
-	void OnEnable()
-	{
-		SetChildActive();
-	}
-
-	void SetChildActive()
-	{
-		if(Application.isPlaying || generatedObject == null) return;
-		generatedObject.GetComponent<VirtualPrefab>().SetActiveInEditor(this.gameObject.activeInHierarchy);
+		if(Application.isPlaying || redrawForce) return;
+		DrawDontEditablePrefab();
 	}
 
 	void DrawDontEditablePrefab()
 	{
 		// param changed
-		if((prefab == null || !previewInEditor) && Child != null)
+		if((prefab == null || !visibleVirtualPrefab) && Child != null)
 		{
 			DeleteChildren();
 			UpdateGameView();
@@ -124,7 +120,7 @@ public class PrefabInPrefab : MonoBehaviour
 			return;
 		}
 
-		if(prefab == null || !previewInEditor) return;
+		if(prefab == null || !visibleVirtualPrefab) return;
 		if(Redraw == redrawCount && !PrefabUpdated()) return;
 		if(ValidationError()) return;
 		redrawCount = Redraw;
@@ -158,7 +154,6 @@ public class PrefabInPrefab : MonoBehaviour
 		child.stepparent = this.gameObject;
 		child.UpdateTransform();
 
-		SetChildActive();
 		UpdateGameView();
 	}
 
@@ -197,11 +192,14 @@ public class PrefabInPrefab : MonoBehaviour
 		{
 			UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
 			SceneView.RepaintAll();
+			updateGameView = false;
 
 			// force redraw anything(ex. NGUI's UICamera)
-			gameObject.SetActive(false);
-			gameObject.SetActive(true);
-			updateGameView = false;
+			var memo = this.gameObject.activeSelf;
+			redrawForce = true;
+			this.gameObject.SetActive(!memo);
+			this.gameObject.SetActive(memo);
+			redrawForce = false;
 		};
 	}
 
