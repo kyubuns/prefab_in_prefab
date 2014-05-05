@@ -190,6 +190,7 @@ public class PrefabInPrefab : MonoBehaviour
 		updateGameView = true;
 		EditorApplication.delayCall += () =>
 		{
+			if(this == null || this.gameObject == null) return;
 			UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
 			SceneView.RepaintAll();
 			updateGameView = false;
