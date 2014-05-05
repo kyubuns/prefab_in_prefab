@@ -17,6 +17,7 @@ public class PrefabInPrefab : MonoBehaviour
 
 	[SerializeField] GameObject prefab;
 	[SerializeField] bool moveComponents;
+	[SerializeField] bool previewInEditor = true;
 	private GameObject generatedObject;
 
 	void Awake()
@@ -115,7 +116,7 @@ public class PrefabInPrefab : MonoBehaviour
 	void DrawDontEditablePrefab()
 	{
 		// param changed
-		if(prefab == null && Child != null)
+		if((prefab == null || !previewInEditor) && Child != null)
 		{
 			DeleteChildren();
 			UpdateGameView();
@@ -123,7 +124,7 @@ public class PrefabInPrefab : MonoBehaviour
 			return;
 		}
 
-		if(prefab == null) return;
+		if(prefab == null || !previewInEditor) return;
 		if(Redraw == redrawCount && !PrefabUpdated()) return;
 		if(ValidationError()) return;
 		redrawCount = Redraw;
