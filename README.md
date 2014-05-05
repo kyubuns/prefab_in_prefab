@@ -3,6 +3,7 @@ prefab_in_prefab
 
 なにこれ？
 * prefab in prefab for unity4.x
+* https://www.youtube.com/watch?v=wSeHsAQZFb0
 * http://www.nicovideo.jp/watch/sm23480599
 
 使い方
