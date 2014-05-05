@@ -3,6 +3,7 @@ prefab_in_prefab
 
 なにこれ？
 * prefab in prefab for unity4.x
+* http://www.nicovideo.jp/watch/sm23480599
 
 使い方
 * PrefabInPrefabコンポーネントを貼り付けて、Prefabを設定するだけ！
