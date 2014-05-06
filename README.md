@@ -7,7 +7,8 @@ prefab_in_prefab
 * http://www.nicovideo.jp/watch/sm23480599
 
 使い方
-* PrefabInPrefabコンポーネントを貼り付けて、Prefabを設定するだけ！
+* Assets/PrefabInPrefabディレクトリ以下をコピーするだけ。
+* 後は、入れ子にしたいところにPrefabInPrefabコンポーネントを貼り付けて、Prefabを設定するだけ！
 
 できること
 * 'Prefab in Prefab' in play/edit mode
