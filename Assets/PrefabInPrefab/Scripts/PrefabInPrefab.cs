@@ -136,7 +136,8 @@ public class PrefabInPrefab : MonoBehaviour
 			EditorApplication.delayCall += () =>
 			{
 				if(generatedObject == null) return;
-				generatedObject.transform.parent = PrefabUtility.FindPrefabRoot(transform.parent.gameObject).transform.parent.transform;
+				var parent = PrefabUtility.FindPrefabRoot(transform.parent.gameObject).transform.parent;
+				generatedObject.transform.parent = parent == null ? null : parent.transform;
 			};
 		}
 		else
