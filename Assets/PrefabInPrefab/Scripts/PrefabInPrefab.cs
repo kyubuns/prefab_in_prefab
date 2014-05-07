@@ -73,7 +73,6 @@ public class PrefabInPrefab : MonoBehaviour
 	private static bool updateGameView = false;
 	private DateTime lastPrefabUpdateTime;
 	private int redrawCount = 0;
-	private bool redrawForce = false;
 	[SerializeField] bool previewInEditor = true;
 
 	private bool visibleVirtualPrefab
@@ -105,7 +104,7 @@ public class PrefabInPrefab : MonoBehaviour
 
 	void OnDisable()
 	{
-		if(Application.isPlaying || redrawForce) return;
+		if(Application.isPlaying) return;
 		DrawDontEditablePrefab();
 	}
 
@@ -187,21 +186,19 @@ public class PrefabInPrefab : MonoBehaviour
 
 	void UpdateGameView()
 	{
-		if(updateGameView) return;
+		if(updateGameView || Application.isPlaying) return;
 		updateGameView = true;
 		EditorApplication.delayCall += () =>
 		{
-			if(this == null || this.gameObject == null) return;
+			if(this == null || this.gameObject == null || Application.isPlaying) return;
 			UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
 			SceneView.RepaintAll();
 			updateGameView = false;
 
 			// force redraw anything(ex. NGUI's UICamera)
-			var memo = this.gameObject.activeSelf;
-			redrawForce = true;
-			this.gameObject.SetActive(!memo);
-			this.gameObject.SetActive(memo);
-			redrawForce = false;
+			var dummy = new GameObject();
+			dummy.transform.parent = null;
+			DestroyImmediate(dummy);
 		};
 	}
 
