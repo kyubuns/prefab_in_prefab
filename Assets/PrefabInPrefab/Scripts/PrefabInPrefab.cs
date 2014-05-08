@@ -69,10 +69,7 @@ public class PrefabInPrefab : MonoBehaviour
 	//  in edit mode
 	// ==============
 
-	private static int Redraw = 0;
-	private static bool updateGameView = false;
 	private DateTime lastPrefabUpdateTime;
-	private int redrawCount = 0;
 	[SerializeField] bool previewInEditor = true;
 
 	private bool visibleVirtualPrefab
@@ -80,49 +77,32 @@ public class PrefabInPrefab : MonoBehaviour
 		get { return previewInEditor && this.gameObject.activeInHierarchy && this.enabled; }
 	}
 
-	public static void RequestRedraw()
+	void StartInEditMode() { DrawDontEditablePrefab(); }
+	void OnDisable() { DrawDontEditablePrefab(); }
+	void OnEnable() { DrawDontEditablePrefab(); }
+	void ParamChanged() { ForceDrawDontEditablePrefab(); }
+
+	public void ForceDrawDontEditablePrefab()
+	{
+		lastPrefabUpdateTime = default(DateTime);
+		DrawDontEditablePrefab();
+	}
+
+	public void DrawDontEditablePrefab()
 	{
 		if(Application.isPlaying) return;
-		EditorApplication.delayCall += () =>
+		if(prefab == null || !visibleVirtualPrefab)
 		{
-			Redraw++;
-			UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
-			SceneView.RepaintAll();
-		};
-	}
-
-	void StartInEditMode()
-	{
-		DrawDontEditablePrefab();
-	}
-
-	void OnRenderObject()
-	{
-		if(Application.isPlaying) return;
-		DrawDontEditablePrefab();
-	}
-
-	void OnDisable()
-	{
-		if(Application.isPlaying) return;
-		DrawDontEditablePrefab();
-	}
-
-	void DrawDontEditablePrefab()
-	{
-		// param changed
-		if((prefab == null || !visibleVirtualPrefab) && Child != null)
-		{
-			DeleteChildren();
-			UpdateGameView();
-			redrawCount = -1;
+			if(Child != null)
+			{
+				// param changed
+				DeleteChildren();
+				UpdateGameView();
+			}
 			return;
 		}
-
-		if(prefab == null || !visibleVirtualPrefab) return;
-		if(Redraw == redrawCount && !PrefabUpdated()) return;
+		if(!PrefabUpdated()) return;
 		if(ValidationError()) return;
-		redrawCount = Redraw;
 
 		DeleteChildren();
 
@@ -160,7 +140,7 @@ public class PrefabInPrefab : MonoBehaviour
 	bool PrefabUpdated()
 	{
 		var prefabUpdateTime = GetPrefabUpdateTime();
-		if(lastPrefabUpdateTime == prefabUpdateTime) return false;
+		if(lastPrefabUpdateTime == prefabUpdateTime && Child != null) return false;
 		lastPrefabUpdateTime = GetPrefabUpdateTime();
 		return true;
 	}
@@ -186,26 +166,19 @@ public class PrefabInPrefab : MonoBehaviour
 
 	void UpdateGameView()
 	{
-		if(updateGameView || Application.isPlaying) return;
-		updateGameView = true;
-		EditorApplication.delayCall += () =>
-		{
-			if(this == null || this.gameObject == null || Application.isPlaying) return;
-			UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
-			SceneView.RepaintAll();
-			updateGameView = false;
+		if(Application.isPlaying) return;
+		UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
+		SceneView.RepaintAll();
 
-			// force redraw anything(ex. NGUI's UICamera)
-			var dummy = new GameObject();
-			dummy.transform.parent = null;
-			DestroyImmediate(dummy);
-		};
+		// force redraw anything(ex. NGUI's UICamera)
+		var dummy = new GameObject();
+		dummy.transform.parent = null;
+		DestroyImmediate(dummy);
 	}
 
 	bool ValidationError()
 	{
 		// check circular reference
-		// って言うらしい。かっこいい。.
 		if(CheckCircularReference(this, null))
 		{
 			Debug.LogError("Can't circular reference.");
@@ -228,8 +201,7 @@ public class PrefabInPrefab : MonoBehaviour
 				}
 				else
 				{
-					redrawCount = -1; //force redraw
-					DrawDontEditablePrefab();
+					ForceDrawDontEditablePrefab();
 				}
 			};
 
