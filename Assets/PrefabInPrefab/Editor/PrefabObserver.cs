@@ -5,8 +5,10 @@ using System.Linq;
 
 namespace PrefabInPrefab
 {
-public class PrefabObserver : UnityEditor.AssetModificationProcessor {
-	static string[] OnWillSaveAssets (string[] paths) {
+public class PrefabObserver : UnityEditor.AssetModificationProcessor
+	{
+	static string[] OnWillSaveAssets (string[] paths)
+	{
 		foreach(GameObject obj in GameObject.FindGameObjectsWithTag("EditorOnly"))
 		{
 			if(!obj.name.StartsWith(">PrefabInPrefab")) continue;
