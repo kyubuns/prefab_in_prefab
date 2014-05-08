@@ -11,9 +11,9 @@ How to use
 
 Features
 * 'Prefab in Prefab' in play/edit mode
-* 'Prefab in Prefab in Prefab' in play/edit mode (unstable)
-* 'Prefab in Prefab in Prefab in Prefab' in play/edit mode (unstable and slow)
-* 'Prefab in Prefab in Prefab in Prefab in ...' in play/edit mode (mysterious)
+* 'Prefab in Prefab in Prefab' in play/edit mode
+* 'Prefab in Prefab in Prefab in Prefab' in play/edit mode
+* 'Prefab in Prefab in Prefab in Prefab in ...' in play/edit mode
 
 License
 * The MIT License - Copyright (c) 2014 kyubuns
