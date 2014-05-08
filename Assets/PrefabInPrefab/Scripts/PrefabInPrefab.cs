@@ -142,7 +142,7 @@ public class PrefabInPrefab : MonoBehaviour
 	{
 		var prefabUpdateTime = GetPrefabUpdateTime();
 		if(lastPrefabUpdateTime == prefabUpdateTime && Child != null) return false;
-		lastPrefabUpdateTime = GetPrefabUpdateTime();
+		lastPrefabUpdateTime = prefabUpdateTime;
 		return true;
 	}
 
