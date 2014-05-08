@@ -132,6 +132,7 @@ public class PrefabInPrefab : MonoBehaviour
 
 		var child = generatedObject.AddComponent<VirtualPrefab>();
 		child.stepparent = this.gameObject;
+		child.original = this;
 		child.UpdateTransform();
 
 		UpdateGameView();
@@ -154,14 +155,14 @@ public class PrefabInPrefab : MonoBehaviour
 		}
 	}
 
-	string GetFilePath()
+	public string GetPrefabFilePath()
 	{
 		return AssetDatabase.GetAssetPath(prefab);
 	}
 
 	DateTime GetPrefabUpdateTime()
 	{
-		return System.IO.File.GetLastWriteTime(GetFilePath());
+		return System.IO.File.GetLastWriteTime(GetPrefabFilePath());
 	}
 
 	void UpdateGameView()

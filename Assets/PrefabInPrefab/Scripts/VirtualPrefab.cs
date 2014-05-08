@@ -21,6 +21,7 @@ public class VirtualPrefab : MonoBehaviour
 
 #if UNITY_EDITOR
 	public GameObject stepparent;
+	public PrefabInPrefab original;
 
 	void Update()
 	{
