@@ -23,7 +23,12 @@ public class PrefabInPrefabEditor : Editor {
 		prefab.objectReferenceValue = (GameObject)EditorGUILayout.ObjectField("Prefab", prefab.objectReferenceValue, typeof(GameObject), false);
 		moveComponents.boolValue = EditorGUILayout.Toggle("Move Components", moveComponents.boolValue);
 		previewInEditor.boolValue = EditorGUILayout.Toggle("Preview In Editor", previewInEditor.boolValue);
-		serializedObject.ApplyModifiedProperties();
+		if(GUI.changed)
+		{
+			serializedObject.ApplyModifiedProperties();
+			var targetComponent = target as PrefabInPrefab;
+			targetComponent.ForceDrawDontEditablePrefab();
+		}
 	}
 }
 
