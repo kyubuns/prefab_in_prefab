@@ -16,7 +16,7 @@ public class PrefabInPrefab : MonoBehaviour
 	public GameObject Child { get { return generatedObject; } }
 
 	[SerializeField] GameObject prefab;
-	[SerializeField] bool moveComponents;
+	[SerializeField] bool moveComponents = true;
 	private GameObject generatedObject;
 
 	void Awake()
