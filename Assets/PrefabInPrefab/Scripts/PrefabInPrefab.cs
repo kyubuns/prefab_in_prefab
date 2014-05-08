@@ -147,7 +147,7 @@ public class PrefabInPrefab : MonoBehaviour
 		generatedObject.tag = "EditorOnly";
 		foreach(var childTransform in generatedObject.GetComponentsInChildren<Transform>())
 		{
-			childTransform.gameObject.hideFlags = HideFlags.NotEditable | HideFlags.HideInHierarchy | HideFlags.HideInInspector;
+			childTransform.gameObject.hideFlags = HideFlags.HideAndDontSave;
 		}
 
 		var child = generatedObject.AddComponent<VirtualPrefab>();
