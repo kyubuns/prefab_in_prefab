@@ -12,7 +12,23 @@ public class DontSave : UnityEditor.AssetModificationProcessor
 		foreach(GameObject obj in GameObject.FindGameObjectsWithTag("EditorOnly"))
 		{
 			if(!obj.name.StartsWith(">PrefabInPrefab")) continue;
+			var originalParent = obj.transform.parent;
+			foreach(var childTransform in obj.GetComponentsInChildren<Transform>())
+			{
+				childTransform.gameObject.hideFlags = HideFlags.HideAndDontSave;
+			}
 			obj.transform.parent = null;
+
+			EditorApplication.delayCall += () =>
+			{
+				if(obj == null) return;
+				obj.transform.parent = originalParent;
+				foreach(var childTransform in obj.GetComponentsInChildren<Transform>())
+				{
+					childTransform.gameObject.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector | HideFlags.NotEditable;
+				}
+			};
+
 		}
 		return paths;
 	}
