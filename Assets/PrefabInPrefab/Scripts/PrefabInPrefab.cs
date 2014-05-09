@@ -18,6 +18,7 @@ public class PrefabInPrefab : MonoBehaviour
 	[SerializeField] GameObject prefab;
 	[SerializeField] bool moveComponents = true;
 	private GameObject generatedObject;
+	private VirtualPrefab virtualPrefab;
 
 	void Awake()
 	{
@@ -131,10 +132,10 @@ public class PrefabInPrefab : MonoBehaviour
 			childTransform.gameObject.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector | HideFlags.NotEditable;
 		}
 
-		var child = generatedObject.AddComponent<VirtualPrefab>();
-		child.stepparent = this.gameObject;
-		child.original = this;
-		child.UpdateTransform();
+		virtualPrefab = generatedObject.AddComponent<VirtualPrefab>();
+		virtualPrefab.stepparent = this.gameObject;
+		virtualPrefab.original = this;
+		virtualPrefab.UpdateTransform();
 
 		UpdateGameView();
 	}
@@ -236,6 +237,18 @@ public class PrefabInPrefab : MonoBehaviour
 		}
 
 		return false;
+	}
+
+	void Update()
+	{
+		if(Application.isPlaying || prefab == null || virtualPrefab == null || !visibleVirtualPrefab) return;
+		if(
+		  generatedObject.transform.position == this.transform.position &&
+		  generatedObject.transform.rotation == this.transform.rotation &&
+		  generatedObject.transform.localScale == this.transform.localScale
+		  ) return;
+
+		virtualPrefab.UpdateTransform();
 	}
 #endif
 }

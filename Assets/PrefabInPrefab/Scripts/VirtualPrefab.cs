@@ -23,15 +23,8 @@ public class VirtualPrefab : MonoBehaviour
 	public GameObject stepparent;
 	public PrefabInPrefab original;
 
-	void Update()
-	{
-		UpdateTransform();
-	}
-
 	public void UpdateTransform()
 	{
-		if(Application.isPlaying) return;
-
 		if(stepparent == null)
 		{
 			DestroyImmediate(gameObject);
