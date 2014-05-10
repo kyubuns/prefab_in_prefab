@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace PrefabInPrefab
+namespace PrefabInPrefabAsset
 {
 //Unityのバグによって、DontSaveフラグを建てたゲームオブジェクトのゴミが保存されてしまう.
 //http://answers.unity3d.com/questions/609621/hideflagsdontsave-causes-checkconsistency-transfor.html

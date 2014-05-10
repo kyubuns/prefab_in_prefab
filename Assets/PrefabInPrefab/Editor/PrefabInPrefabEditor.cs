@@ -2,7 +2,7 @@
 using UnityEditor;
 using System.Collections;
 
-namespace PrefabInPrefab
+namespace PrefabInPrefabAsset
 {
 
 [CustomEditor(typeof(PrefabInPrefab))]

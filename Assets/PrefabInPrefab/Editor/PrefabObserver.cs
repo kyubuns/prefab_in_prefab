@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Collections;
 using System.Linq;
 
-namespace PrefabInPrefab
+namespace PrefabInPrefabAsset
 {
 public class PrefabObserver : UnityEditor.AssetModificationProcessor
 	{

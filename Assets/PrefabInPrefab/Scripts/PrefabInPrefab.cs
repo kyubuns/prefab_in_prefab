@@ -7,9 +7,6 @@ using System.Reflection;
 using UnityEditor;
 #endif
 
-namespace PrefabInPrefab
-{
-
 [ExecuteInEditMode]
 public class PrefabInPrefab : MonoBehaviour
 {
@@ -146,7 +143,7 @@ public class PrefabInPrefab : MonoBehaviour
 			childTransform.gameObject.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector | HideFlags.NotEditable;
 		}
 
-		var child = generatedObject.AddComponent<VirtualPrefab>();
+		var child = generatedObject.AddComponent<PrefabInPrefabAsset.VirtualPrefab>();
 		child.stepparent = this.gameObject;
 		child.original = this;
 		child.UpdateTransform();
@@ -253,6 +250,4 @@ public class PrefabInPrefab : MonoBehaviour
 		return false;
 	}
 #endif
-}
-
 }
