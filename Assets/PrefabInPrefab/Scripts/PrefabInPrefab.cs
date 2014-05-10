@@ -13,7 +13,21 @@ namespace PrefabInPrefab
 [ExecuteInEditMode]
 public class PrefabInPrefab : MonoBehaviour
 {
-	public GameObject Child { get { return generatedObject; } }
+	public GameObject Child
+	{
+		get
+		{
+			if(Application.isPlaying && generatedObject == null && prefab != null)
+			{
+				/*
+				You can use Script Execution Order Settings.
+				http://docs.unity3d.com/Documentation/Components/class-ScriptExecution.html
+				*/
+				Debug.LogError("Prefab In Prefab is Uninitialized. You can use this after Awake().");
+			}
+			return generatedObject;
+		}
+	}
 	public T GetComponentFromChild<T>() where T : Component { return Child.GetComponent<T>(); }
 
 	[SerializeField] GameObject prefab;
