@@ -14,6 +14,7 @@ namespace PrefabInPrefab
 public class PrefabInPrefab : MonoBehaviour
 {
 	public GameObject Child { get { return generatedObject; } }
+	public T GetComponentFromChild<T>() where T : Component { return Child.GetComponent<T>(); }
 
 	[SerializeField] GameObject prefab;
 	[SerializeField] bool moveComponents = true;
