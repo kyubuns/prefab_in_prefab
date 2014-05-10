@@ -3,8 +3,8 @@ prefab_in_prefab
 
 What is this
 * prefab in prefab for unity4.x
-* https://www.youtube.com/watch?v=wSeHsAQZFb0
-* http://www.nicovideo.jp/watch/sm23480599
+* Mobie https://www.youtube.com/watch?v=wSeHsAQZFb0
+* Japanese http://qiita.com/kyubuns/items/5741e5281f4bb8de656c
 
 How to use
 * cp prefab_in_prefab/Assets/PrefabInPrefab your_project/Assets/
