@@ -96,7 +96,6 @@ public class PrefabInPrefab : MonoBehaviour
 
 	public void ForceDrawDontEditablePrefab()
 	{
-		Debug.Log("ForceDrawDontEditablePrefab");
 		lastPrefabUpdateTime = "";
 		DrawDontEditablePrefab();
 	}
@@ -155,9 +154,7 @@ public class PrefabInPrefab : MonoBehaviour
 	bool PrefabUpdated()
 	{
 		var prefabUpdateTime = GetPrefabUpdateTime();
-		Debug.Log(string.Format("{0} == {1}", prefabUpdateTime, lastPrefabUpdateTime));
 		if(lastPrefabUpdateTime == prefabUpdateTime && Child != null) return false;
-		Debug.Log("changed!");
 		lastPrefabUpdateTime = prefabUpdateTime;
 		return true;
 	}
