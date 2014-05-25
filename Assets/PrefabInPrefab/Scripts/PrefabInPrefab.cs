@@ -81,7 +81,7 @@ public class PrefabInPrefab : MonoBehaviour
 	//  in edit mode
 	// ==============
 
-	private DateTime lastPrefabUpdateTime;
+	private string lastPrefabUpdateTime;
 	[SerializeField] bool previewInEditor = true;
 
 	private bool visibleVirtualPrefab
@@ -96,7 +96,8 @@ public class PrefabInPrefab : MonoBehaviour
 
 	public void ForceDrawDontEditablePrefab()
 	{
-		lastPrefabUpdateTime = default(DateTime);
+		Debug.Log("ForceDrawDontEditablePrefab");
+		lastPrefabUpdateTime = "";
 		DrawDontEditablePrefab();
 	}
 
@@ -154,7 +155,9 @@ public class PrefabInPrefab : MonoBehaviour
 	bool PrefabUpdated()
 	{
 		var prefabUpdateTime = GetPrefabUpdateTime();
+		Debug.Log(string.Format("{0} == {1}", prefabUpdateTime, lastPrefabUpdateTime));
 		if(lastPrefabUpdateTime == prefabUpdateTime && Child != null) return false;
+		Debug.Log("changed!");
 		lastPrefabUpdateTime = prefabUpdateTime;
 		return true;
 	}
@@ -173,9 +176,19 @@ public class PrefabInPrefab : MonoBehaviour
 		return AssetDatabase.GetAssetPath(prefab);
 	}
 
-	DateTime GetPrefabUpdateTime()
+	string GetPrefabUpdateTime()
 	{
-		return System.IO.File.GetLastWriteTime(GetPrefabFilePath());
+		string result;
+		using(System.IO.FileStream fs = new System.IO.FileStream(GetPrefabFilePath(), System.IO.FileMode.Open, System.IO.FileAccess.Read))
+		{
+			using(System.Security.Cryptography.SHA1 sha1 = System.Security.Cryptography.SHA1.Create())
+			{
+				byte[] bs = sha1.ComputeHash(fs);
+				result = BitConverter.ToString(bs).ToLower().Replace("-","");
+			}
+		}
+		
+		return result;
 	}
 
 	void UpdateGameView()
