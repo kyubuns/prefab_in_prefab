@@ -96,12 +96,13 @@ Transform:
   m_PrefabInternal: {fileID: 1263703612}
   m_GameObject: {fileID: 71593136}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.78375101, y: 1, z: 0}
+  m_LocalPosition: {x: 3.55561352, y: 3.39779329, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 148095526}
   - {fileID: 1804244764}
   m_Father: {fileID: 0}
+  m_RootOrder: 2
 --- !u!1 &148095525
 GameObject:
   m_ObjectHideFlags: 0
@@ -131,6 +132,7 @@ Transform:
   m_Children:
   - {fileID: 426398228}
   m_Father: {fileID: 71593137}
+  m_RootOrder: 0
 --- !u!114 &148095527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,8 +228,11 @@ Camera:
     m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
   m_HDR: 0
   m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: .0219999999
 --- !u!4 &307034850
 Transform:
   m_ObjectHideFlags: 0
@@ -239,6 +244,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 0
 --- !u!1 &426398227
 GameObject:
   m_ObjectHideFlags: 11
@@ -266,10 +272,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 426398227}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -5.96046448e-08, z: 0}
+  m_LocalPosition: {x: 0, y: 1.78813934e-07, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 148095526}
+  m_RootOrder: 0
 --- !u!114 &426398229
 MonoBehaviour:
   m_ObjectHideFlags: 11
@@ -314,7 +321,7 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 426398227}
-  m_Text: Example
+  m_Text: Line1
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -346,9 +353,8 @@ Renderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_SortingLayer: 0
-  m_SortingOrder: 0
   m_SortingLayerID: 0
+  m_SortingOrder: 0
 --- !u!1 &640491261
 GameObject:
   m_ObjectHideFlags: 0
@@ -408,9 +414,8 @@ Renderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_SortingLayer: 0
-  m_SortingOrder: 0
   m_SortingLayerID: 0
+  m_SortingOrder: 0
 --- !u!4 &640491264
 Transform:
   m_ObjectHideFlags: 0
@@ -422,6 +427,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 1
 --- !u!114 &640491265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,10 +468,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1079362096}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 5.96046448e-08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1804244764}
+  m_RootOrder: 0
 --- !u!114 &1079362098
 MonoBehaviour:
   m_ObjectHideFlags: 11
@@ -510,7 +517,7 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1079362096}
-  m_Text: Example
+  m_Text: Line2
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -542,9 +549,8 @@ Renderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_SortingLayer: 0
-  m_SortingOrder: 0
   m_SortingLayerID: 0
+  m_SortingOrder: 0
 --- !u!1001 &1263703612
 Prefab:
   m_ObjectHideFlags: 0
@@ -554,11 +560,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: 99f6673ff77a54458bdf66e89cd522b1, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 4.78375101
+      value: 3.55561352
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 99f6673ff77a54458bdf66e89cd522b1, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 3.39779329
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 99f6673ff77a54458bdf66e89cd522b1, type: 2}
       propertyPath: m_LocalPosition.z
@@ -579,6 +585,10 @@ Prefab:
     - target: {fileID: 400000, guid: 99f6673ff77a54458bdf66e89cd522b1, type: 2}
       propertyPath: m_LocalRotation.w
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 99f6673ff77a54458bdf66e89cd522b1, type: 2}
+      propertyPath: m_RootOrder
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 99f6673ff77a54458bdf66e89cd522b1, type: 2}
@@ -654,6 +664,7 @@ Transform:
   m_Children:
   - {fileID: 1079362097}
   m_Father: {fileID: 71593137}
+  m_RootOrder: 1
 --- !u!114 &1804244765
 MonoBehaviour:
   m_ObjectHideFlags: 0
