@@ -2,7 +2,7 @@ prefab_in_prefab
 ================
 
 What is this
-* prefab in prefab for unity4.5 (if you use unity4.4, you can use 'unity4.4' branch)
+* prefab in prefab for unity4.5 (if you are using unity4.4, you can use 'unity4.4' branch)
 * Mobie https://www.youtube.com/watch?v=wSeHsAQZFb0
 * Japanese http://qiita.com/kyubuns/items/5741e5281f4bb8de656c
 
