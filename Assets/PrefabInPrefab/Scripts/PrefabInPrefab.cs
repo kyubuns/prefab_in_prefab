@@ -253,7 +253,7 @@ public class PrefabInPrefab : MonoBehaviour
 		foreach(var nextTarget in ((GameObject)target.prefab).GetComponentsInChildren<PrefabInPrefab>(true))
 		{
 			if(nextTarget == this) continue;
-			if(CheckCircularReference(nextTarget, usedPrefabs)) return true;
+			if(CheckCircularReference(nextTarget, new List<int>(usedPrefabs))) return true;
 		}
 
 		return false;
